@@ -14,7 +14,8 @@ news
 <p style="width: 200px">Количество новостей:{{ news|length }}</p>
 <hr>
     {% if perms.news.add_post %}
-    <a href="{% url 'post_create' %}">Добавить новость</a>
+    <a href="{% url 'post_create_NW' %}">Добавить новость</a>
+    <a href="{% url 'post_create_AR' %}">Добавить статью</a>
     {% endif %}
 
 <h1>Новости 24</h1>
@@ -34,12 +35,7 @@ news
                <td style="width: 200px">от {{new.dateCreation}}</td>
                <td style="width: 250px">{{new.text|truncatechars:20|censor}}</td>
            </tr>
-            {% if perms.news.change_post %}
-            <a href="{% url 'post_update' pk=post.id %}">Изменить</a>
-            {% endif %}
-            {% if perms.news.delete_post %}
-            <a href="{% url 'post_delete' post.id %}">Удалить</a>
-            {% endif %}
+
 
            {% endfor %}
     </table>

@@ -157,7 +157,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"}
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 
-EMAIL_BACKEND =  'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = "test.skillfactory@yandex.ru"
@@ -168,8 +168,8 @@ EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = "test.skillfactory@yandex.ru"
 
 SERVER_EMAIL = "test.skillfactory@yandex.ru"
+
 MANAGERS = (
-    ('mika', 'anz.mikail@mail.ru'),
     ('mikael', 'mikael-anzorov@rambler.ru'),
 )
 ADMINS = (
