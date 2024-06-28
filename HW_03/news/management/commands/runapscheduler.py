@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime
+import datetime
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
@@ -10,7 +10,7 @@ from django.template.loader import render_to_string
 from django_apscheduler import util
 from django_apscheduler.jobstores import DjangoJobStore
 from django_apscheduler.models import DjangoJobExecution
-
+from django.utils import timezone
 from news.models import Post, Category
 
 
@@ -18,17 +18,14 @@ logger = logging.getLogger(__name__)
 
 
 def my_job():
-    # news = Post.objects.order_by('-dateCreation')[:3]
-    # text = '\n'.join(['{} - {}'.format(p.title, p.text) for p in news])
-    # mail_managers("последние новости", text)
 
-    today = datetime.datetime.now()
+    today = timezone.now()
     last_week = today - datetime.timedelta(days=7)
-    posts = Post.objects.filter(date__gte=last_week)
-    categories = set(posts.values_list('category__name', flat=True))
-    subscribers = set(Category.objects.filter(name__in=categories).values_list('subscribers__email', flat=True))
+    posts = Post.objects.filter(dateCreation__gte=last_week)
+    categories = set(posts.values_list('postCategory__name', flat=True))
+    subscribers = set(Category.objects.filter(name__in=categories).values_list('subscriptions__user__email', flat=True))
     html_content = render_to_string('daily_post.html',
-                                    {'link': f'http://127.0.0.1:8000/news/{pk}',
+                                    {'link': f'http://127.0.0.1:8000',
                                      'posts': posts,
                                      })
     msg = EmailMultiAlternatives(
@@ -55,8 +52,8 @@ class Command(BaseCommand):
 
         scheduler.add_job(
             my_job,
-            trigger=CronTrigger(second="*/5"),
-            #trigger=CronTrigger(day_of_week='fri', hour="18", minute="00"),
+           # trigger=CronTrigger(second="*/5"),
+            trigger=CronTrigger(day_of_week='fri', hour="18", minute="00"),
             id="my_job",
             max_instances=1,
             replace_existing=True,

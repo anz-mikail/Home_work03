@@ -133,20 +133,3 @@ def subscriptions(request):
         'subscriptions.html',
         {'categories': categories_with_subscriptions},
     )
-
-
-# class CategoryListView(ListView):
-#     model = Post
-#     template_name = 'category_list.html'
-#     context_object_name = 'category_news_list'
-#
-#     def get_queryset(self):
-#         self.category = get_object_or_404(Category, id=self.kwargs['pk'])
-#         queryset = Post.objects.filter(category=self.category).order_by('-date')
-#         return queryset
-#
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['is_not_subscriber'] = self.request.user not in self.category.subscribers.all()
-#         context['category'] = self.category
-#         return context
