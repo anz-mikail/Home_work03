@@ -11,6 +11,7 @@ from .filters import PostFilter
 from .forms import PostForm
 
 
+
 class PostList(ListView):
     model = Post
     ordering = '-dateCreation'
