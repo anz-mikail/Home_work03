@@ -6,6 +6,7 @@ from django.conf import settings
 from .models import Post, Subscription, User
 import datetime
 
+
 #html_message = strip_tags(render_to_string('mail_template.html', {'context': 'values'}))
 
 @shared_task
@@ -21,7 +22,7 @@ def send_mail(pk):
                     f'<p><b>Содержание:</b> {post.text[0:123]}</p>'
                     f'<p><b>Автор:</b> {post.user}</p>'
                     f'<a href="http://127.0.0.1:8000{post.get_absolute_url()}">'
-                    f'Ссылка на пост</a>'
+                    f'Ссылка на пост tasks</a>'
                     )
     for email in emails:
         print('email ', email)
@@ -33,8 +34,8 @@ def send_mail(pk):
 @shared_task()
 def send_mail_weekly():
     one_week_later = datetime.datetime.now() - datetime.timedelta(weeks=1)
-    posts = Post.objects.filter(date__gt=one_week_later, type='AR')
-    category = set(posts.values_list('category', flat=True))
+    posts = Post.objects.filter(dateCreation__gt=one_week_later)
+    category = set(posts.values_list('postCategory', flat=True))
     subscribers = set(Subscription.objects.filter(category__in=category).values_list('user__email', flat=True))
 
     html_content = render_to_string(

@@ -18,12 +18,12 @@ def post_created(instance, **kwargs):
 
     text_content = (
         f'новость: {instance.title}\n'
-        f'Ссылка на новость: http://127.0.0.1:8000{instance.get_absolute_url()}'
+        f'Ссылка на новость signal: http://127.0.0.1:8000{instance.get_absolute_url()}'
     )
     html_content = (
         f'Пост: {instance.title}<br>'
-        f'<a href="http://127.0.0.1{instance.get_absolute_url()}">'
-        f'Ссылка на новость</a>'
+        f'<a href="http://127.0.0.1:8000{instance.get_absolute_url()}">'
+        f'Ссылка на новость signal1</a>'
     )
     for email in emails:
         msg = EmailMultiAlternatives(subject, text_content, None, [email])
